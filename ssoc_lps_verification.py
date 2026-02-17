@@ -26,7 +26,7 @@ Authors:
   Tamaki (Miosync, Inc.)
 
 License: MIT
-Repository: https://github.com/miosync-masa/SSOC_Framework-for-Li-P-S-Solid-Electrolytes
+Repository: https://github.com/miosync-masa/ssoc-lps
 
 Usage:
   python ssoc_lps_verification.py
