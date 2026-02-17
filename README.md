@@ -120,5 +120,5 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ## Contact
 
-Masamichi Iizumi — masa@miosync.com
+Masamichi Iizumi — m.iizumi@miosync.email
 Miosync, Inc.
