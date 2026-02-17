@@ -34,7 +34,7 @@ plt.rcParams.update({
     'lines.markersize': 6,
 })
 
-OUTDIR = '/figures'
+OUTDIR = '/figures' 
 os.makedirs(OUTDIR, exist_ok=True)
 
 # Color scheme by composition
