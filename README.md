@@ -1,15 +1,23 @@
-# SSOC: Analytical Design Framework for Li–P–S Solid-State Batteries
+# SSOC: PCC/SCC Separation Framework for Solid-State Batteries
 
-**From material conductivity to cell-level charging rate — a complete analytical design chain for amorphous (Li₂S)ₓ(P₂S₅)₁₋ₓ solid electrolytes.**
+**From a universal conductivity law, through material design, to cell-level charging rate — a complete analytical chain for solid electrolytes.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
 
 ---
 
-This repository contains two companion papers that together form a closed analytical pipeline:
+This repository contains three interconnected projects built on the PCC/SCC separation framework:
 
 ```
+   Paper 3 (Universal Law)
+┌──────────────────────────┐
+│ σ = N × D(v_f) × F(v_f) │   5 electrolyte families
+│ Universal decomposition  │   66 density-resolved points
+│ Li⁺ + Na⁺ carriers      │   Peak / Decay regimes
+└────────────┬─────────────┘
+             │ instantiated for Li-P-S
+             ▼
    Paper 1                          Paper 2
 ┌────────────┐    σ(x,ρ,T)    ┌────────────────┐   Format
 │ SSOC       │ ──────────────→ │ SSOC-Thermal   │ ──────────→  Go / No-Go
@@ -18,6 +26,58 @@ This repository contains two companion papers that together form a closed analyt
   "What σ        ↑                "Can I fast-charge
    can I get?"   └── SCC loop ──── at this C-rate?"
 ```
+
+## 📁 Repository Structure
+
+```
+ssoc-lps/
+├── README.md                  ← You are here
+├── LICENSE
+│
+├── ssoc-lps/                  ← Paper 1: Material Design Equation
+│   ├── README.md
+│   ├── ssoc_lps_verification.py
+│   └── figures/
+│
+├── Ssocthermal/               ← Paper 2: Thermal Regime & Format Selection
+│   ├── README.md
+│   ├── code/
+│   │   ├── ssoc_thermal_v50_unified.py
+│   │   └── ssoc_thermal_v51_figures.py
+│   ├── paper/
+│   └── figures/
+│
+└── ssoc_for_Solid_Electrolytes/  ← Paper 3: Universal Decomposition Law
+    ├── README.md
+    ├── universal_5system.py
+    └── prl_figures.py
+```
+
+---
+
+## Paper 3 — [Universal Decomposition Law](ssoc_for_Solid_Electrolytes/)
+
+> *"Is there a universal law governing ionic conductivity across all solid electrolytes?"*
+
+**Yes.** Across five structurally distinct families — amorphous sulfides, crystalline garnets, argyrodites, NASICON phosphates, and Na-NASICON conductors — ionic conductivity follows an invariant multiplicative decomposition:
+
+```
+σ_i(v_f, T) = N_i(ρ, T) × D_i(v_f; T) × F_i(v_f; T)
+```
+
+governed by a single control coordinate: **effective free volume v_f = 1 − ρ/ρ₀**.
+
+| System | n | Regime | Key evidence |
+|--------|---|--------|-------------|
+| Li₂S–P₂S₅ | 23 | Peak | D vs F competition at v_f ≈ 7% |
+| LLZO garnet | 17 | Decay | 16.8× σ change from density alone |
+| Li₆PS₅Cl | 11 | Decay | Continuous density scan proof |
+| LATP/LAGP | 10 | Decay | Sintering density control |
+| Na-NZSP | 5 | Boundary | Na⁺ carrier, same framework |
+
+**The parameters change. The law does not.**
+
+→ **[Full details in ssoc_for_Solid_Electrolytes/README.md](ssoc_for_Solid_Electrolytes/)**
 
 ---
 
@@ -60,20 +120,22 @@ result = cell.compute_Theta(sigma_300K, C_rate=1.0)
 print(f"Θ = {result['Theta_c']:.2f}")  # → 0.44 (Regime II)
 ```
 
-→ **[Full details in ssoc-thermal/README.md](Ssocthermal/)**
+→ **[Full details in Ssocthermal/README.md](Ssocthermal/)**
 
 ---
 
 ## The Complete Design Chain
 
 ```
-  STEP 1 (Paper 1)               STEP 2 (Paper 2)              STEP 3 (Paper 2)
-┌───────────────────┐      ┌───────────────────────┐      ┌──────────────────┐
-│  Choose x, ρ, T   │      │  Compute Θ            │      │  Regime I: PRISM │
-│  ↓                │      │  ↓                    │      │  Regime II: w_p/ │
-│  σ = SSOC(x,ρ,T)  │ ───→ │  Classify regime      │ ───→ │    w_c vs 0.78   │
-│                   │      │  (I / II / III)       │      │  Regime III: ↑σ  │
-└───────────────────┘      └───────────────────────┘      └──────────────────┘
+  STEP 0 (Paper 3)               STEP 1 (Paper 1)               STEP 2 (Paper 2)
+┌───────────────────┐      ┌───────────────────┐      ┌──────────────────────┐
+│ Universal law:    │      │  Choose x, ρ, T   │      │  Compute Θ           │
+│ σ = N·D(vf)·F(vf)│      │  ↓                │      │  ↓                   │
+│                   │ ───→ │  σ = SSOC(x,ρ,T)  │ ───→ │  Classify regime     │
+│ Which regime?     │      │  (closed form)    │      │  I / II / III        │
+│ Peak or Decay?    │      │                   │      │  → Format decision   │
+└───────────────────┘      └───────────────────┘      └──────────────────────┘
+     Law                       Design equation            Engineering protocol
 ```
 
 ## Authors
@@ -84,3 +146,7 @@ print(f"Θ = {result['Theta_c']:.2f}")  # → 0.44 (Regime II)
 ## License
 
 MIT — see [LICENSE](LICENSE) for details.
+
+---
+
+*"The diversity of solid electrolytes does not oppose a general law; it reveals one."*
